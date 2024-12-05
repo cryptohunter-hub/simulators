@@ -1,0 +1,179 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #121212; /* Koyu arka plan */
+    color: #E0E0E0; /* Açık gri metin rengi */
+  }
+  
+  h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #f0cb6d; /* Parlak mor vurgu rengi */
+    text-align: center;
+  }
+  
+  .container {
+    text-align: center;
+    max-width: 600px;
+    background-color: #1E1E1E; /* Daha açık koyu arka plan */
+    padding: 44px 32px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 100%;
+  }
+  
+  .slogan {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 32px;
+    color: #E0E0E0;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .button-container button {
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #121212;
+    background: #f0cb6d;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .button-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+  }
+  
+  .button-container button:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .input-group label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    color: #E0E0E0;
+    margin-bottom: 8px;
+  }
+  
+  .input-group select,
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: #E0E0E0;
+    background-color: #2C2C2C;
+    border: 1px solid #f0cb6d;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .input-group select:focus,
+  .input-group input:focus {
+    border-color: #f0cb6d;
+    box-shadow: 0 4px 8px #cdb850c0;
+    outline: none;
+  }
+  
+  button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #121212;
+    background: #f0cb6d;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+  }
+  
+  button:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  .result {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    padding: 15px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #E0E0E0;
+    background-color: #2C2C2C;
+    border: 1px solid #f0cb6d;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  .total-score {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #2C2C2C;
+    border: 1px solid #f0cb6d;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #E0E0E0;
+  }
+  
+  .step-results {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #2C2C2C;
+    border: 1px solid #f0cb6d;
+    border-radius: 5px;
+    color: #E0E0E0;
+  }
+  
+  .step {
+    padding: 10px;
+    margin-top: 10px;
+    border-bottom: 1px solid #f0cb6d;
+  }
+  
+  .success {
+    color: #03DAC6; /* Teal rengi */
+  }
+  
+  .failure {
+    color: #CF6679; /* Kırmızımsı pembe rengi */
+  }
+  
+  .warning {
+    color: #CF6679;
+    font-weight: bold;
+  }
+  

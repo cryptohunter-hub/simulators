@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HP Decrease Simulation</title>
+ <link rel="stylesheet" href="style.css">
+
+  </style>
+</head>
+<body>
+  <h1>HP Decrease Simulation</h1>
+  <div class="container">
+    <div class="input-group">
+        <label for="initialEnergy">Initial Energy</label>
+        <input type="number" id="initialEnergy" value="20" min="1">
+    </div>
+    <div class="input-group">
+      <label for="initialHP">Initial HP</label>
+      <input type="number" id="initialHP" value="100" min="1">
+    </div>
+    <div class="input-group">
+      <label for="comfort">Comfort Attribute</label>
+      <input type="number" id="comfort" value="50" min="0">
+    </div>
+    <div class="input-group">
+      <label for="duration">Duration (minutes)</label>
+      <input type="number" id="duration" value="60" min="1">
+    </div>
+    <div class="input-group">
+      <label for="baseRate">Base HP Decrease Rate</label>
+      <input type="number" id="baseRate" value="1" step="0.1" min="0">
+    </div>
+    <button onclick="startSimulation()">Start Simulation</button>
+    <button onclick="stopSimulation()">Stop Simulation</button>
+    <div class="result" id="result">
+      <strong>Results:</strong> Enter inputs and click "Start Simulation" to see results.
+    </div>
+  </div>
+
+  <script>
+    let simulationInterval;
+
+    function calculateHPDecrease(baseRate, comfort, energyConsumed, cFactor = 0.1) {
+      return baseRate * energyConsumed * (1 - (comfort * cFactor) / 100);
+    }
+
+    function startSimulation() {
+      const initialHP = parseFloat(document.getElementById("initialHP").value);
+      const comfort = parseFloat(document.getElementById("comfort").value);
+      const initialEnergy = parseFloat(document.getElementById("initialEnergy").value);
+      const duration = parseFloat(document.getElementById("duration").value);
+      const baseRate = parseFloat(document.getElementById("baseRate").value);
+
+      const energyPer5Minutes = 1; // 1 energy consumed every 5 minutes
+      let totalEnergyConsumed = 0;
+      let remainingEnergy = initialEnergy;
+      let currentHP = initialHP;
+      const resultElement = document.getElementById("result");
+
+      if (simulationInterval) clearInterval(simulationInterval);
+
+      const intervalTime = 300000 / (duration * 60 / 5); // Adjust interval for simulation speed
+      const totalIterations = Math.ceil(duration / 5);
+      let iteration = 0;
+
+      resultElement.innerHTML = `<strong>Simulation Started</strong><br>Initial HP: ${currentHP}, Initial Energy: ${initialEnergy}`;
+
+      simulationInterval = setInterval(() => {
+        if (iteration >= totalIterations || currentHP <= 0 || remainingEnergy <= 0) {
+          clearInterval(simulationInterval);
+          resultElement.innerHTML += `<p><strong>Simulation Ended</strong></p>`;
+          return;
+        }
+
+        // Calculate energy used and HP decrease
+        const energyConsumed = Math.min(energyPer5Minutes, remainingEnergy);
+        totalEnergyConsumed += energyConsumed;
+        remainingEnergy -= energyConsumed;
+        if(remainingEnergy <= 0) {
+          resultElement.innerHTML += `<p class="warning"><strong>Out of Energy!</strong></p>`;
+          clearInterval(simulationInterval);
+          return;
+        }
+
+        const hpDecrease = calculateHPDecrease(baseRate, comfort, energyConsumed);
+        currentHP = Math.max(0, currentHP - hpDecrease);
+
+        // Add result for this iteration
+        resultElement.innerHTML += `
+          <p>Stage ${iteration + 1}: 
+          Energy Consumed: ${energyConsumed}, 
+          HP Decrease: ${hpDecrease.toFixed(2)}, 
+          Current HP: <span class="${currentHP < 80 ? 'warning' : ''}">${currentHP.toFixed(2)}</span>, 
+          Remaining Energy: ${remainingEnergy.toFixed(2)}</p>
+        `;
+
+        // Check for critical HP
+        if (currentHP < 80) {
+          resultElement.innerHTML += `<p class="warning">Warning: HP is below 80! Score earning is disabled.</p>`;
+        }
+
+        iteration++;
+      }, intervalTime);
+    }
+
+    function stopSimulation() {
+      if (simulationInterval) {
+        clearInterval(simulationInterval);
+        alert("Simulation Stopped!");
+      }
+    }
+  </script>
+</body>
+</html>

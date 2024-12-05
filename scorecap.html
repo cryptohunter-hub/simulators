@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScoreCap Calculation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>ScoreCap Calculator</h1>
+  <div class="container">
+    <div class="input-group">
+        <label for="baseCap">Base Capacity</label>
+        <input type="number" id="baseCap" value="0" min="0">
+      </div>
+    <div class="input-group">
+      <label for="normalShoes">Number of Normal Shoes</label>
+      <input type="number" id="normalShoes" value="0" min="0">
+    </div>
+    <div class="input-group">
+      <label for="rareShoes">Number of Rare Shoes</label>
+      <input type="number" id="rareShoes" value="0" min="0">
+    </div>
+    <div class="input-group">
+      <label for="uniqueShoes">Number of Unique Shoes</label>
+      <input type="number" id="uniqueShoes" value="0" min="0">
+    </div>
+    <div class="input-group">
+      <label for="legendaryShoes">Number of Legendary Shoes</label>
+      <input type="number" id="legendaryShoes" value="0" min="0">
+    </div>
+    <div class="input-group">
+      <label for="mythicShoes">Number of Mythic Shoes</label>
+      <input type="number" id="mythicShoes" value="0" min="0">
+    </div>
+    <button onclick="calculateScoreCap()">Calculate ScoreCap</button>
+    <div class="result" id="result">
+      <strong>ScoreCap:</strong> Enter NFT counts and click "Calculate ScoreCap" to see the result.
+    </div>
+  </div>
+
+  <script>
+    function calculateScoreCap() {
+      
+
+      // Rarity Multipliers and Max Limits
+      const rarityData = {
+        normal: { multiplier: 10, max: 250 },
+        rare: { multiplier: 20, max: 400 },
+        unique: { multiplier: 40, max: 500 },
+        legendary: { multiplier: 60, max: 500 },
+        mythic: { multiplier: 120, max: 1000 }
+      };
+
+      // Get user input
+      const baseCap = parseInt(document.getElementById("baseCap").value) || 0;
+      const normalCount = parseInt(document.getElementById("normalShoes").value) || 0;
+      const rareCount = parseInt(document.getElementById("rareShoes").value) || 0;
+      const uniqueCount = parseInt(document.getElementById("uniqueShoes").value) || 0;
+      const legendaryCount = parseInt(document.getElementById("legendaryShoes").value) || 0;
+      const mythicCount = parseInt(document.getElementById("mythicShoes").value) || 0;
+
+      // Calculate ScoreCap for each rarity
+      const normalScore = Math.min(normalCount * rarityData.normal.multiplier, rarityData.normal.max);
+      const rareScore = Math.min(rareCount * rarityData.rare.multiplier, rarityData.rare.max);
+      const uniqueScore = Math.min(uniqueCount * rarityData.unique.multiplier, rarityData.unique.max);
+      const legendaryScore = Math.min(legendaryCount * rarityData.legendary.multiplier, rarityData.legendary.max);
+      const mythicScore = Math.min(mythicCount * rarityData.mythic.multiplier, rarityData.mythic.max);
+
+      // Calculate total ScoreCap
+      const totalScoreCap = baseCap + normalScore + rareScore + uniqueScore + legendaryScore + mythicScore;
+
+      // Display result
+      const resultElement = document.getElementById("result");
+      resultElement.innerHTML = `
+        <strong>Total Score Cap:</strong> ${totalScoreCap} <br>
+        <p><strong>Details:</strong></p>
+        <p>Normal Shoes: ${normalScore}</p>
+        <p>Rare Shoes: ${rareScore}</p>
+        <p>Unique Shoes: ${uniqueScore}</p>
+        <p>Legendary Shoes: ${legendaryScore}</p>
+        <p>Mythic Shoes: ${mythicScore}</p>
+      `;
+    }
+  </script>
+</body>
+</html>

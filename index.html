@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide Main Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 style="font-size: x-large;">Welcome to the <strong style="font-size: xx-large;">Crypto Hunter World!</strong><br>Your journey starts here.</h1>
+        
+  <div class="container">
+    <div class="button-container">
+      <button onclick="navigate('score')">Score Simulator</button>
+      <button onclick="navigate('scorecap')">Score Cap Simulator</button>
+      <button onclick="navigate('hpdecrease')">HP Decrease Simulator</button>
+      <button onclick="navigate('hprepair')">HP Repair Simulator</button>
+      <button onclick="navigate('mintingprice')">Minting Price Calculator</button>
+    </div>
+  </div>
+
+  <script>
+    function navigate(page) {
+      window.location.href = `${page}.html`;
+    }
+  </script>
+</body>
+</html>

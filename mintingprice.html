@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minting Cost Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Minting Cost Calculator</h1>
+  <div class="container">
+    <div class="input-group">
+      <label for="shoeARarity">Shoe A Rarity</label>
+      <select id="shoeARarity">
+        <option value="1.0">Normal</option>
+        <option value="1.25">Rare</option>
+        <option value="1.5">Unique</option>
+        <option value="1.75">Legend</option>
+        <option value="2.0">Mythic</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="shoeACount">Shoe A Mint Count (0-7)</label>
+      <input type="number" id="shoeACount" value="0" min="0" max="7">
+    </div>
+    <div class="input-group">
+      <label for="shoeBRarity">Shoe B Rarity</label>
+      <select id="shoeBRarity">
+        <option value="1.0">Normal</option>
+        <option value="1.25">Rare</option>
+        <option value="1.5">Unique</option>
+        <option value="1.75">Legend</option>
+        <option value="2.0">Mythic</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="shoeBCount">Shoe B Mint Count (0-7)</label>
+      <input type="number" id="shoeBCount" value="0" min="0" max="7">
+    </div>
+    <button onclick="calculateMintingCost()">Calculate Minting Cost</button>
+    <div class="result" id="result">
+      <strong>Minting Cost:</strong> Enter inputs and click "Calculate Minting Cost" to see the result.
+    </div>
+  </div>
+
+  <script>
+    const basePrice = 200; // Normal base price for 0/7 mint count
+    const mintMultipliers = [1.0, 1.3, 1.6, 1.9, 2.2, 2.5, 2.8];
+    const rarityMultipliers = {
+      "1.0": "Normal",
+      "1.25": "Rare",
+      "1.5": "Unique",
+      "1.75": "Legend",
+      "2.0": "Mythic"
+    };
+
+    function calculateMintingCost() {
+      const shoeARarity = parseFloat(document.getElementById("shoeARarity").value);
+      const shoeACount = parseInt(document.getElementById("shoeACount").value) || 0;
+      const shoeBRarity = parseFloat(document.getElementById("shoeBRarity").value);
+      const shoeBCount = parseInt(document.getElementById("shoeBCount").value) || 0;
+
+      // Calculate cost for Shoe A
+      const shoeAMultiplier = mintMultipliers[shoeACount] || 1.0;
+      const shoeACost = basePrice * shoeAMultiplier * shoeARarity;
+
+      // Calculate cost for Shoe B
+      const shoeBMultiplier = mintMultipliers[shoeBCount] || 1.0;
+      const shoeBCost = basePrice * shoeBMultiplier * shoeBRarity;
+
+      // Total minting cost
+      const totalCost = shoeACost + shoeBCost;
+
+      // Display results
+      const resultElement = document.getElementById("result");
+      resultElement.innerHTML = `
+        <strong>Total Minting Cost:</strong> ${totalCost.toFixed(2)} CHW <br>
+        <p><strong>Details:</strong></p>
+        <p>Shoe A: ${rarityMultipliers[shoeARarity.toString()]} (Mint Count ${shoeACount}) = ${shoeACost.toFixed(2)} CHW</p>
+        <p>Shoe B: ${rarityMultipliers[shoeBRarity.toString()]} (Mint Count ${shoeBCount}) = ${shoeBCost.toFixed(2)} CHW</p>
+      `;
+    }
+  </script>
+</body>
+</html>

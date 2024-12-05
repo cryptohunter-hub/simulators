@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HP Repair Cost Calculation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>HP Repair Cost Calculator</h1>
+  <div class="container">
+    <div class="input-group">
+      <label for="durabilityLost">Durability Lost</label>
+      <input type="number" id="durabilityLost" value="10" min="1">
+    </div>
+    <div class="input-group">
+      <label for="resilience">Resilience Stat</label>
+      <input type="number" id="resilience" value="50" min="0">
+    </div>
+    <div class="input-group">
+      <label for="rarity">Rarity</label>
+      <select id="rarity">
+        <option value="1.0">Normal</option>
+        <option value="1.2">Rare</option>
+        <option value="1.5">Unique</option>
+        <option value="2.0">Legendary</option>
+        <option value="3.0">Mythic</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="baseRepairCost">Base Repair Cost (per durability)</label>
+      <input type="number" id="baseRepairCost" value="5" min="1">
+    </div>
+    <div class="input-group">
+      <label for="repairCoefficient">Repair Coefficient (Cr)</label>
+      <input type="number" id="repairCoefficient" value="0.05" step="0.01" min="0">
+    </div>
+    <button onclick="calculateRepairCost()">Calculate Repair Cost</button>
+    <div class="result" id="result">
+      <strong>Repair Cost:</strong> Enter inputs and click "Calculate Repair Cost" to see the result.
+    </div>
+  </div>
+
+  <script>
+    function calculateRepairCost() {
+      const durabilityLost = parseFloat(document.getElementById("durabilityLost").value);
+      const resilience = parseFloat(document.getElementById("resilience").value);
+      const rarityMultiplier = parseFloat(document.getElementById("rarity").value);
+      const baseRepairCost = parseFloat(document.getElementById("baseRepairCost").value);
+      const repairCoefficient = parseFloat(document.getElementById("repairCoefficient").value);
+
+      // Repair cost formula
+      const costReductionFactor = 1 - (resilience * repairCoefficient);
+      const repairCostPerUnit = baseRepairCost * costReductionFactor * rarityMultiplier;
+      const totalRepairCost = durabilityLost * repairCostPerUnit;
+
+      // Display result
+      const resultElement = document.getElementById("result");
+      resultElement.innerHTML = `
+        <strong>Total Repair Cost:</strong> ${totalRepairCost.toFixed(2)} <br>
+        <p><strong>Details:</strong></p>
+        <p>Durability Lost: ${durabilityLost}</p>
+        <p>Resilience Stat: ${resilience}</p>
+        <p>Rarity Multiplier: ${rarityMultiplier}</p>
+        <p>Base Repair Cost (per durability): ${baseRepairCost}</p>
+        <p>Cost Reduction Factor: ${(costReductionFactor * 100).toFixed(2)}%</p>
+      `;
+    }
+  </script>
+</body>
+</html>

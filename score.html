@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Score System Simulation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Score System Simulation</h1>
+  <div class="container">
+    <div class="input-group">
+      <label for="totalEnergy">Total Energy Consumed</label>
+      <input type="number" id="totalEnergy" value="5">
+    </div>
+    <div class="input-group">
+      <label for="conditionModifier">Energy Condition Modifier</label>
+      <input type="number" id="conditionModifier" value="0.2">
+    </div>
+    <div class="input-group">
+        <label for="criticalEventModifier">Critical Event</label>
+        <input type="number" id="criticalEventModifier" value="0.2">
+      </div>
+    <div class="input-group">
+      <label for="performance">Performance</label>
+      <input type="number" id="performance" value="80">
+    </div>
+    <div class="input-group">
+      <label for="performanceCoefficient">Performance Coefficient (P_f)</label>
+      <input type="number" id="performanceCoefficient" value="0.1">
+    </div>
+    <div class="input-group">
+      <label for="chanceFactor">Chance Factor (0-1)</label>
+      <input type="number" id="chanceFactor" value="0.5" step="0.1" min="0" max="1">
+    </div>
+    <button onclick="startSimulation()">Start Simulation</button>
+    <button onclick="stopSimulation()">Stop Simulation</button>
+    <div class="total-score" id="totalScore">Total Score: 0</div>
+    <div class="step-results" id="stepResults">Step-by-step results will appear here.</div>
+  </div>
+
+  <script>
+    let simulationInterval;
+
+    function simulateStep(totalEnergy, conditionModifier, performance, performanceCoefficient, chanceFactor,criticalEventModifier) {
+      const randomBaseScore = Math.floor(Math.random() * 10) + 1; // Random value between 1 and 10
+      const criticalEvent = Math.random() < criticalEventModifier; // Check if a critical event occurs
+      const criticalBonus = criticalEvent ? 50 : 0;
+
+      const stepEnergy = conditionModifier; // Energy consumed in each step
+      totalEnergy = Math.max(0, totalEnergy - stepEnergy); // Deduct energy per step
+
+      const rawScore = conditionModifier * (randomBaseScore + performance * performanceCoefficient) + criticalBonus;
+      const success = Math.random() < chanceFactor; // Check if the score is added
+      const finalScore = success ? rawScore : 0;
+
+      return { finalScore, totalEnergy, success, randomBaseScore, criticalEvent ,rawScore };
+    }
+
+    function startSimulation() {
+      const totalEnergyInput = document.getElementById("totalEnergy");
+      const conditionModifier = parseFloat(document.getElementById("conditionModifier").value);
+      const performance = parseFloat(document.getElementById("performance").value);
+      const performanceCoefficient = parseFloat(document.getElementById("performanceCoefficient").value);
+      const chanceFactor = parseFloat(document.getElementById("chanceFactor").value);
+      const criticalEventModifier = parseFloat(document.getElementById("criticalEventModifier").value);
+
+      let totalEnergy = parseFloat(totalEnergyInput.value);
+      const resultElement = document.getElementById("stepResults");
+      const totalScoreElement = document.getElementById("totalScore");
+      let cumulativeScore = 0;
+
+      if (simulationInterval) clearInterval(simulationInterval);
+
+      const intervalTime = (totalEnergy / conditionModifier) * 1000;
+
+      simulationInterval = setInterval(() => {
+        if (totalEnergy <= 0) {
+          clearInterval(simulationInterval);
+          resultElement.innerHTML += `<p><strong>Simulation Ended: Out of Energy!</strong></p>`;
+          return;
+        }
+
+        const { finalScore, totalEnergy: remainingEnergy, success, randomBaseScore, criticalEvent,rawScore} = simulateStep(
+          totalEnergy,
+          conditionModifier,
+          performance,
+          performanceCoefficient,
+          chanceFactor,
+          criticalEventModifier
+        );
+
+        cumulativeScore += finalScore;
+        totalEnergy = remainingEnergy;
+        
+        // Update total score
+        totalScoreElement.innerText = `Total Score: ${cumulativeScore.toFixed(2)}`;
+
+        // Add step result
+        const stepResult = document.createElement("div");
+        stepResult.className = "step";
+        stepResult.innerHTML = `
+          <p>Random Base Score: ${randomBaseScore}</p>
+          <p>Critical Event: ${criticalEvent ? "Yes (+50 bonus)" : "No"}</p>
+          <p>Stage Score: ${criticalEvent ? (rawScore - 50).toFixed(2) : rawScore.toFixed(2)}</p>
+          <p>Your Score: ${success ? `<span class="success">+${finalScore.toFixed(2)} (Success)</span>` : `<span class="failure">0 (Failed)</span>`}</p>
+          <p>Energy Left: ${totalEnergy.toFixed(3)}</p>
+        `;
+        resultElement.appendChild(stepResult);
+      }, 1000);
+    }
+
+    function stopSimulation() {
+      if (simulationInterval) {
+        clearInterval(simulationInterval);
+        alert("Simulation Stopped!");
+      }
+    }
+  </script>
+</body>
+</html>
